@@ -51,7 +51,7 @@ public class SegmentTree<E> {
         return 2 * index + 2;
     }
 
-    //
+    //返回区间[queryL, queryR]的值
     public E query(int queryL, int queryR) {
         if (queryL < 0 || queryL >= data.length || queryR < 0 || queryR >= data.length || queryL > queryR) {
             throw new IllegalArgumentException("Index is illegal.");
@@ -65,6 +65,7 @@ public class SegmentTree<E> {
             return tree[treeIndex];
         }
         int mid = l + ((r - l) >> 1);
+
         int leftTreeIndex = leftChild(treeIndex);
         int rightTreeIndex = rightChild(treeIndex);
 
@@ -73,7 +74,7 @@ public class SegmentTree<E> {
         } else if (queryR <= mid) {
             return query(leftTreeIndex, l, mid, queryL, queryR);
         }
-        E leftResult = query(leftTreeIndex, l, mid, queryL, queryR);
+        E leftResult = query(leftTreeIndex, l, mid, queryL, mid);
         E rightResult = query(rightTreeIndex, mid + 1, r, mid + 1, queryR);
         return merger.merge(leftResult, rightResult);
     }
